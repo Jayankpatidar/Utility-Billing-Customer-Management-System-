@@ -1,0 +1,80 @@
+<div class="page-header">
+  <div class="page-header-left">
+    <h1>Dashboard</h1>
+    <p>Overview of your utility management system</p>
+  </div>
+</div>
+
+<app-loading-spinner *ngIf="loading"></app-loading-spinner>
+
+<ng-container *ngIf="!loading && stats">
+  <!-- Stats Grid -->
+  <div class="stats-grid">
+    <app-stat-card icon="fa-users"             iconColor="green"  [value]="stats.totalCustomers.toString()"  label="Total Customers"  trend="↑ Active accounts"></app-stat-card>
+    <app-stat-card icon="fa-file-invoice"      iconColor="gold"   [value]="stats.pendingBills.toString()"    label="Pending Bills"    trend="Awaiting payment"></app-stat-card>
+    <app-stat-card icon="fa-exclamation-triangle" iconColor="orange" [value]="stats.overdueBills.toString()"  label="Overdue Bills"    trend="Needs attention"></app-stat-card>
+    <app-stat-card icon="fa-rupee-sign"        iconColor="blue"   [value]="revenueDisplay()"                 label="Total Revenue"    trend="This period"></app-stat-card>
+  </div>
+
+  <!-- Charts Row -->
+  <div class="dash-grid">
+    <!-- Revenue Chart -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Monthly Collection</div>
+          <div class="card-subtitle">Revenue over last 6 months</div>
+        </div>
+      </div>
+      <div class="chart-bar-wrap" *ngIf="stats.monthlyCollection">
+        <div class="chart-bar-col" *ngFor="let d of stats.monthlyCollection">
+          <div class="chart-bar" [style.height]="barHeight(d.amount)" [title]="d.month + ': ₹' + d.amount"></div>
+          <div class="chart-bar-label">{{ d.month }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Recent Activity</div>
+      </div>
+      <div class="activity-list" *ngIf="stats.recentActivity">
+        <div class="activity-item" *ngFor="let a of stats.recentActivity">
+          <div class="activity-dot" [ngClass]="a.type">
+            <i class="fas" [ngClass]="activityIcon(a.type)"></i>
+          </div>
+          <div class="activity-info">
+            <div class="activity-text">{{ a.message }}</div>
+            <div class="activity-time">{{ a.time }}</div>
+          </div>
+          <div class="activity-amount" *ngIf="a.amount">{{ formatAmount(a.amount) }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Links -->
+  <div class="quick-links">
+    <a routerLink="/customers" class="quick-link">
+      <i class="fas fa-users"></i>
+      <span>Manage Customers</span>
+      <i class="fas fa-arrow-right arrow"></i>
+    </a>
+    <a routerLink="/billing" class="quick-link">
+      <i class="fas fa-file-invoice"></i>
+      <span>View Bills</span>
+      <i class="fas fa-arrow-right arrow"></i>
+    </a>
+    <a routerLink="/payments" class="quick-link">
+      <i class="fas fa-credit-card"></i>
+      <span>Payments</span>
+      <i class="fas fa-arrow-right arrow"></i>
+    </a>
+    <a routerLink="/reports" class="quick-link">
+      <i class="fas fa-chart-line"></i>
+      <span>Analytics</span>
+      <i class="fas fa-arrow-right arrow"></i>
+    </a>
+  </div>
+</ng-container>

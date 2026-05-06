@@ -1,0 +1,68 @@
+<div class="modal-backdrop" [class.open]="isOpen">
+  <div class="modal">
+    <div class="modal-header">
+      <h3><i class="fas fa-lock" style="color:var(--accent);margin-right:8px"></i>Process Payment</h3>
+      <button class="modal-close" (click)="cancel()">×</button>
+    </div>
+    <div class="modal-body">
+
+      <!-- Bill Summary -->
+      <div class="receipt mb-16" *ngIf="bill">
+        <div class="receipt-row"><span>Bill ID</span>   <span class="mono">{{ bill.billId }}</span></div>
+        <div class="receipt-row"><span>Customer</span>  <span>{{ bill.customerName }}</span></div>
+        <div class="receipt-row total"><span>Amount Due</span><span>{{ bill.charges.totalAmount | inr }}</span></div>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" id="pay-form">
+        <div class="form-group">
+          <label>Amount (₹) *</label>
+          <input formControlName="amount" type="number" class="form-control" />
+        </div>
+
+        <div class="form-group">
+          <label>Payment Method</label>
+          <select formControlName="method" class="form-control">
+            <option value="credit_card">💳 Credit Card</option>
+            <option value="debit_card">🏦 Debit Card</option>
+            <option value="net_banking">🌐 Net Banking</option>
+            <option value="upi">📱 UPI</option>
+            <option value="cash">💵 Cash</option>
+            <option value="bank_transfer">🏛️ Bank Transfer</option>
+            <option value="neft">🏦 NEFT</option>
+            <option value="rtgs">🏦 RTGS</option>
+          </select>
+        </div>
+
+        <ng-container *ngIf="showCardFields">
+          <div class="form-group">
+            <label>Card Number</label>
+            <input formControlName="cardNumber" class="form-control" placeholder="•••• •••• •••• ••••" maxlength="19" />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Expiry</label>
+              <input formControlName="expiry" class="form-control" placeholder="MM/YY" maxlength="5" />
+            </div>
+            <div class="form-group">
+              <label>CVV</label>
+              <input formControlName="cvv" class="form-control" placeholder="•••" maxlength="3" type="password" />
+            </div>
+          </div>
+        </ng-container>
+
+        <div class="secure-note">
+          <i class="fas fa-shield-alt"></i> {{ isUpiMethod ? 'Secured by Razorpay UPI Checkout' : 'Secured by Stripe' }} · 256-bit SSL encryption
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="cancel()">Cancel</button>
+      <button class="btn btn-primary" form="pay-form" type="submit" [disabled]="loading">
+        <div class="spinner" *ngIf="loading"></div>
+        <i class="fas fa-lock" *ngIf="!loading"></i>
+        {{ loading ? 'Processing...' : 'Pay Now' }}
+      </button>
+    </div>
+  </div>
+</div>

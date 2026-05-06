@@ -1,0 +1,34 @@
+<div class="modal-backdrop" [class.open]="isOpen">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h3>Bill Details</h3>
+      <button class="modal-close" (click)="closed.emit()">×</button>
+    </div>
+    <div class="modal-body" *ngIf="bill">
+      <div class="receipt">
+        <div class="receipt-header">
+          <div class="receipt-title">⚡ UBCMS – TAX INVOICE</div>
+          <div class="text-sm muted" style="margin-top:4px">Bill ID: {{ bill.billId }}</div>
+        </div>
+        <div class="receipt-row"><span>Customer</span><span>{{ bill.customerName || bill.customerId }}</span></div>
+        <div class="receipt-row"><span>Billing Period</span>
+           <span>{{ bill.billingPeriod.from | date:'dd MMM yyyy' }} – {{ bill.billingPeriod.to | date:'dd MMM yyyy' }}</span>
+        </div>
+        <div class="receipt-row"><span>Previous Reading</span><span class="mono">{{ bill.usage.previousReading }} kWh</span></div>
+        <div class="receipt-row"><span>Current Reading</span> <span class="mono">{{ bill.usage.currentReading }} kWh</span></div>
+        <div class="receipt-row"><span>Units Consumed</span>  <span class="mono">{{ bill.usage.unitsConsumed }} kWh</span></div>
+          <div class="receipt-row"><span>Basic Charge</span>    <span>{{ bill.charges.basicCharge  | inr }}</span></div>
+          <div class="receipt-row"><span>Usage Charge</span>    <span>{{ bill.charges.usageCharge  | inr }}</span></div>
+          <div class="receipt-row"><span>Tax</span>             <span>{{ bill.charges.taxes        | inr }}</span></div>
+          <div class="receipt-row"><span>Discount</span>        <span>– {{ bill.charges.discount   | inr }}</span></div>
+          <div class="receipt-row total"><span>TOTAL DUE</span> <span>{{ bill.charges.totalAmount  | inr }}</span></div>
+        <div class="receipt-row" style="margin-top:8px"><span>Due Date</span><span>{{ bill.dueDate | date:'dd MMM yyyy' }}</span></div>
+        <div class="receipt-row"><span>Status</span><span><app-badge [value]="bill.status"></app-badge></span></div>
+        <div class="receipt-row" *ngIf="bill.paymentDate"><span>Payment Date</span><span>{{ bill.paymentDate | date:'dd MMM yyyy' }}</span></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="closed.emit()">Close</button>
+    </div>
+  </div>
+</div>

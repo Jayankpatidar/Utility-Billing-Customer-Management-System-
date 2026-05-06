@@ -1,0 +1,52 @@
+// ─── VARIABLES ───────────────────────────────────────────
+$bg:            #0d1117;
+$bg-card:       #161b22;
+$bg-hover:      #1c2128;
+$border:        #30363d;
+$border-light:  #21262d;
+$accent:        #00d4aa;
+$accent-dim:    rgba(0, 212, 170, 0.12);
+$accent2:       #4f8ef7;
+$accent2-dim:   rgba(79, 142, 247, 0.12);
+$warn:          #f78166;
+$warn-dim:      rgba(247, 129, 102, 0.12);
+$gold:          #e3b341;
+$gold-dim:      rgba(227, 179, 65, 0.12);
+$text:          #e6edf3;
+$text-muted:    #8b949e;
+$text-dim:      #484f58;
+$radius:        10px;
+$radius-sm:     6px;
+$shadow:        0 8px 32px rgba(0, 0, 0, 0.4);
+$shadow-sm:     0 2px 8px rgba(0, 0, 0, 0.3);
+$nav-width:     240px;
+$header-height: 60px;
+$font-mono:     'Space Mono', monospace;
+$font-sans:     'DM Sans', sans-serif;
+
+// ─── CSS CUSTOM PROPERTIES ───────────────────────────────
+:root {
+  --bg:           #{$bg};
+  --bg-card:      #{$bg-card};
+  --bg-hover:     #{$bg-hover};
+  --border:       #{$border};
+  --border-light: #{$border-light};
+  --accent:       #{$accent};
+  --accent-dim:   #{$accent-dim};
+  --accent2:      #{$accent2};
+  --accent2-dim:  #{$accent2-dim};
+  --warn:         #{$warn};
+  --warn-dim:     #{$warn-dim};
+  --gold:         #{$gold};
+  --gold-dim:     #{$gold-dim};
+  --text:         #{$text};
+  --text-muted:   #{$text-muted};
+  --text-dim:     #{$text-dim};
+  --radius:       #{$radius};
+  --radius-sm:    #{$radius-sm};
+  --shadow:       #{$shadow};
+  --shadow-sm:    #{$shadow-sm};
+  --nav-width:    #{$nav-width};
+  --header-h:     #{$header-height};
+  --font-mono:    #{$font-mono};
+}

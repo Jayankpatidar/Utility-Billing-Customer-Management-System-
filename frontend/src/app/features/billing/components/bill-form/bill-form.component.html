@@ -1,0 +1,101 @@
+<div class="modal-backdrop" [class.open]="isOpen">
+  <div class="modal">
+    <div class="modal-header">
+      <h3><i class="fas fa-file-invoice" style="color:var(--accent);margin-right:8px"></i>Generate Bill</h3>
+      <button class="modal-close" (click)="cancel()">×</button>
+    </div>
+
+    <div class="modal-body">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" id="bill-form">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Customer ID *</label>
+            <input formControlName="customerId" class="form-control" placeholder="CUST-001"
+                   [class.is-invalid]="form.get('customerId')!.invalid && form.get('customerId')!.touched" />
+          </div>
+          <div class="form-group">
+            <label>Customer Name *</label>
+            <input formControlName="customerName" class="form-control" placeholder="Full name"
+                   [class.is-invalid]="form.get('customerName')!.invalid && form.get('customerName')!.touched" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Tariff Plan *</label>
+            <select formControlName="tariffPlan" class="form-control" (change)="calcPreview()">
+              <option value="standard">Standard (INR 5/unit)</option>
+              <option value="premium">Premium (INR 6/unit)</option>
+              <option value="commercial">Commercial (INR 7/unit)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Discount (INR)</label>
+            <input formControlName="discount" type="number" class="form-control" placeholder="0"
+                   (input)="calcPreview()" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Preferred Delivery *</label>
+            <select formControlName="deliveryMethod" class="form-control">
+              <option value="email">Email</option>
+              <option value="postal">Postal</option>
+            </select>
+          </div>
+          <div class="form-group"></div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Billing From *</label>
+            <input formControlName="billingFrom" type="date" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label>Billing To *</label>
+            <input formControlName="billingTo" type="date" class="form-control" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Previous Reading (units)</label>
+            <input formControlName="previousReading" type="number" class="form-control" placeholder="0"
+                   (input)="calcPreview()" />
+          </div>
+          <div class="form-group">
+            <label>Current Reading (units) *</label>
+            <input formControlName="currentReading" type="number" class="form-control" placeholder="0"
+                   [class.is-invalid]="form.get('currentReading')!.invalid && form.get('currentReading')!.touched"
+                   (input)="calcPreview()" />
+          </div>
+        </div>
+
+        <!-- Live Preview -->
+        <div class="receipt" *ngIf="preview">
+          <div class="receipt-header">
+            <div class="receipt-title">⚡ Bill Preview</div>
+          </div>
+          <div class="receipt-row"><span>Units Consumed</span><span class="mono">{{ preview.units }} kWh</span></div>
+          <div class="receipt-row"><span>Basic Charge</span><span>{{ preview.basic | inr }}</span></div>
+          <div class="receipt-row"><span>Usage Charge (INR {{ preview.rate }}/unit)</span><span>{{ preview.usage | inr }}</span></div>
+          <div class="receipt-row"><span>Tax (10%)</span><span>{{ preview.tax | inr }}</span></div>
+          <div class="receipt-row"><span>Discount</span><span>- {{ preview.discount | inr }}</span></div>
+          <div class="receipt-row total"><span>TOTAL DUE</span><span>{{ preview.total | inr }}</span></div>
+        </div>
+
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="cancel()">Cancel</button>
+      <button class="btn btn-primary" form="bill-form" type="submit" [disabled]="loading">
+        <div class="spinner" *ngIf="loading"></div>
+        <i class="fas fa-file-invoice" *ngIf="!loading"></i>
+        {{ loading ? 'Generating...' : 'Generate Bill' }}
+      </button>
+    </div>
+  </div>
+</div>

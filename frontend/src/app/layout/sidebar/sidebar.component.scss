@@ -1,0 +1,114 @@
+@import 'src/styles/variables';
+@import 'src/styles/mixins';
+
+.sidebar {
+  width: $nav-width;
+  background: $bg-card;
+  border-right: 1px solid $border;
+  position: fixed;
+  top: 0; left: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  transition: transform 0.3s;
+  @include scrollbar;
+
+  @include responsive-mobile {
+    transform: translateX(-100%);
+    &.open { transform: translateX(0); }
+  }
+}
+
+.sidebar-header {
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid $border;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar-icon {
+  width: 36px; height: 36px;
+  background: $accent;
+  border-radius: 8px;
+  display: grid; place-items: center;
+  font-size: 16px; color: #0d1117;
+  flex-shrink: 0;
+}
+
+.sidebar-title { font-size: 15px; font-weight: 700; line-height: 1.2; }
+.sidebar-sub   { font-size: 10px; color: $text-muted; font-family: $font-mono; }
+
+.sidebar-nav {
+  flex: 1;
+  padding: 12px 10px;
+  overflow-y: auto;
+  @include scrollbar;
+}
+
+.nav-section-label {
+  font-size: 10px; color: $text-dim;
+  font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 8px 10px 4px;
+  font-family: $font-mono;
+}
+
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 10px; border-radius: $radius-sm;
+  cursor: pointer; font-size: 13.5px; font-weight: 500;
+  color: $text-muted; transition: all 0.15s;
+  margin-bottom: 2px; text-decoration: none;
+
+  &:hover { background: $bg-hover; color: $text; text-decoration: none; }
+
+  &.active {
+    background: $accent-dim; color: $accent;
+    border: 1px solid rgba(0, 212, 170, 0.15);
+  }
+
+  i { width: 18px; text-align: center; font-size: 14px; }
+}
+
+.nav-badge {
+  margin-left: auto;
+  background: $warn; color: #fff;
+  font-size: 10px; font-weight: 700;
+  padding: 2px 6px; border-radius: 10px;
+  font-family: $font-mono;
+}
+
+.sidebar-footer {
+  padding: 14px;
+  border-top: 1px solid $border;
+}
+
+.user-info {
+  display: flex; align-items: center; gap: 10px;
+  cursor: pointer; padding: 8px;
+  border-radius: $radius-sm;
+  &:hover { background: $bg-hover; }
+}
+
+.user-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: $accent-dim; border: 1.5px solid $accent;
+  display: grid; place-items: center;
+  font-size: 13px; color: $accent; font-weight: 700; flex-shrink: 0;
+}
+
+.user-name { font-size: 13px; font-weight: 600; }
+.user-role { font-size: 11px; color: $text-muted; font-family: $font-mono; }
+
+.logout-btn {
+  margin-left: auto;
+  background: none; border: none;
+  color: $text-muted; cursor: pointer;
+  font-size: 14px; padding: 4px;
+  &:hover { color: $warn; }
+}

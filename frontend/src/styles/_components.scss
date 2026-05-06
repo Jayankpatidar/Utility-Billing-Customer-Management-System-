@@ -1,0 +1,232 @@
+@import 'variables';
+@import 'mixins';
+
+// ─── BUTTONS ─────────────────────────────────────────────
+.btn {
+  @include btn-base;
+
+  &-primary   { background: $accent; color: #0d1117;
+    &:hover { background: darken($accent, 8%); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,212,170,0.3); } }
+  &-secondary { background: $bg; border: 1px solid $border; color: $text;
+    &:hover { background: $bg-hover; border-color: $accent; } }
+  &-danger    { background: $warn-dim; border: 1px solid $warn; color: $warn;
+    &:hover { background: $warn; color: #fff; } }
+  &-blue      { background: $accent2-dim; border: 1px solid $accent2; color: $accent2;
+    &:hover { background: $accent2; color: #fff; } }
+  &-gold      { background: $gold-dim; border: 1px solid $gold; color: $gold;
+    &:hover { background: $gold; color: #0d1117; } }
+  &-ghost     { background: transparent; border: 1px solid $border; color: $text-muted;
+    &:hover { background: $bg-hover; color: $text; } }
+
+  &-full { width: 100%; justify-content: center; padding: 12px; font-size: 15px; }
+  &-sm   { padding: 6px 12px; font-size: 12px; }
+  &-icon { padding: 8px; width: 34px; height: 34px; justify-content: center; }
+
+  &:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+}
+
+// ─── BADGES ──────────────────────────────────────────────
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 8px; border-radius: 20px;
+  font-size: 11px; font-weight: 600; font-family: $font-mono;
+  &::before { content: '●'; font-size: 8px; }
+
+  &-active, &-success, &-paid    { background: rgba(0,212,170,0.15); color: $accent; }
+  &-inactive, &-cancelled        { background: $bg-hover; color: $text-muted; }
+  &-suspended, &-overdue, &-failed { background: $warn-dim; color: $warn; }
+  &-pending                      { background: $gold-dim; color: $gold; }
+  &-commercial                   { background: $accent2-dim; color: $accent2; }
+  &-residential                  { background: rgba(126,231,135,0.1); color: #7ee787; }
+}
+
+// ─── FORMS ───────────────────────────────────────────────
+.form-group {
+  margin-bottom: 18px;
+
+  label {
+    display: block; font-size: 13px; color: $text-muted;
+    margin-bottom: 6px; font-weight: 500;
+  }
+}
+
+.form-control {
+  width: 100%; background: $bg; border: 1px solid $border;
+  border-radius: $radius-sm; padding: 10px 14px;
+  color: $text; font-size: 14px; font-family: $font-sans;
+  transition: border-color 0.2s; outline: none;
+
+  &:focus { border-color: $accent; box-shadow: 0 0 0 3px $accent-dim; }
+  &::placeholder { color: $text-dim; }
+
+  &.is-invalid { border-color: $warn; }
+  &.is-valid   { border-color: $accent; }
+}
+
+select.form-control { cursor: pointer; }
+textarea.form-control { resize: vertical; min-height: 80px; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  @include responsive-mobile { grid-template-columns: 1fr; }
+}
+
+.form-hint  { font-size: 12px; color: $text-muted; margin-top: 4px; }
+.form-error { font-size: 12px; color: $warn; margin-top: 4px; }
+
+// ─── CARDS ───────────────────────────────────────────────
+.card {
+  @include card;
+  margin-bottom: 16px;
+
+  &-header {
+    @include flex-between;
+    margin-bottom: 16px;
+  }
+  &-title    { font-size: 15px; font-weight: 700; }
+  &-subtitle { font-size: 13px; color: $text-muted; margin-top: 2px; }
+}
+
+// ─── TABLE ───────────────────────────────────────────────
+.table-wrap { overflow-x: auto; @include scrollbar; }
+
+table {
+  width: 100%; border-collapse: collapse; font-size: 13.5px;
+
+  thead th {
+    background: $bg; padding: 10px 14px;
+    text-align: left; font-size: 11px; font-weight: 700;
+    color: $text-muted; text-transform: uppercase;
+    letter-spacing: 0.06em; border-bottom: 1px solid $border;
+    font-family: $font-mono; white-space: nowrap;
+  }
+
+  tbody {
+    td { padding: 12px 14px; border-bottom: 1px solid $border-light; vertical-align: middle; }
+    tr:hover td { background: $bg-hover; }
+    tr:last-child td { border-bottom: none; }
+  }
+}
+
+// ─── PAGE LAYOUT ─────────────────────────────────────────
+.page-header {
+  @include flex-between;
+  margin-bottom: 24px; gap: 16px; flex-wrap: wrap;
+
+  &-left {
+    h1 { font-size: 22px; font-weight: 700; }
+    p  { color: $text-muted; font-size: 14px; margin-top: 3px; }
+  }
+  &-actions { display: flex; gap: 10px; }
+}
+
+// ─── FILTER BAR ──────────────────────────────────────────
+.filter-bar {
+  display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;
+
+  .search-wrap {
+    position: relative; flex: 1; min-width: 200px;
+    i { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: $text-muted; font-size: 14px; pointer-events: none; }
+  }
+  .search-input {
+    width: 100%; background: $bg-card; border: 1px solid $border;
+    border-radius: $radius-sm; padding: 9px 14px 9px 36px;
+    color: $text; font-size: 14px; font-family: $font-sans; outline: none;
+    transition: border-color 0.2s;
+    &:focus { border-color: $accent; }
+    &::placeholder { color: $text-dim; }
+  }
+}
+
+// ─── STATS GRID ──────────────────────────────────────────
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px; margin-bottom: 24px;
+}
+
+.stat-card {
+  @include card;
+  display: flex; flex-direction: column; gap: 8px;
+  transition: border-color 0.2s;
+  &:hover { border-color: $accent; }
+
+  .stat-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    @include flex-center; font-size: 18px;
+    &.green  { background: $accent-dim; color: $accent; }
+    &.blue   { background: $accent2-dim; color: $accent2; }
+    &.orange { background: $warn-dim; color: $warn; }
+    &.gold   { background: $gold-dim; color: $gold; }
+  }
+  .stat-value { font-size: 28px; font-weight: 700; font-family: $font-mono; }
+  .stat-label { font-size: 13px; color: $text-muted; }
+  .stat-trend { font-size: 12px; color: $accent; font-family: $font-mono; }
+}
+
+// ─── EMPTY STATE ─────────────────────────────────────────
+.empty-state {
+  text-align: center; padding: 48px 24px;
+  i  { font-size: 48px; color: $text-dim; margin-bottom: 16px; display: block; }
+  h3 { font-size: 16px; margin-bottom: 8px; }
+  p  { color: $text-muted; font-size: 14px; }
+}
+
+// ─── LOADING ─────────────────────────────────────────────
+.loading-wrap {
+  display: flex; align-items: center; justify-content: center;
+  padding: 40px; color: $text-muted; gap: 10px;
+}
+
+.spinner {
+  width: 20px; height: 20px;
+  border: 2px solid $border; border-top-color: $accent;
+  border-radius: 50%; animation: spin 0.8s linear infinite;
+}
+
+// ─── DETAIL ROWS ─────────────────────────────────────────
+.detail-row {
+  display: flex; padding: 10px 0;
+  border-bottom: 1px solid $border-light; font-size: 13.5px;
+  &:last-child { border-bottom: none; }
+
+  .detail-label { color: $text-muted; width: 160px; flex-shrink: 0; }
+  .detail-value { font-weight: 500; }
+}
+
+// ─── RECEIPT ─────────────────────────────────────────────
+.receipt {
+  background: $bg; border: 1px solid $border;
+  border-radius: $radius; padding: 20px; font-family: $font-mono;
+
+  &-header {
+    text-align: center; margin-bottom: 16px;
+    padding-bottom: 16px; border-bottom: 1px dashed $border;
+  }
+  &-title { font-size: 16px; font-weight: 700; color: $accent; }
+  &-row {
+    display: flex; justify-content: space-between;
+    font-size: 12px; padding: 4px 0;
+    &.total {
+      font-size: 14px; font-weight: 700; color: $accent;
+      border-top: 1px dashed $border; padding-top: 8px; margin-top: 4px;
+    }
+  }
+}
+
+// ─── UTILITY ─────────────────────────────────────────────
+.mono  { font-family: $font-mono; }
+.muted { color: $text-muted; }
+.accent-text { color: $accent; }
+.warn-text   { color: $warn; }
+.gold-text   { color: $gold; }
+.text-sm { font-size: 12px; }
+.text-xs { font-size: 11px; }
+.fw-bold { font-weight: 700; }
+.mt-0  { margin-top: 0; }
+.mb-0  { margin-bottom: 0; }
+.mb-16 { margin-bottom: 16px; }
+.mb-24 { margin-bottom: 24px; }
+.gap-8  { gap: 8px; }
+.gap-12 { gap: 12px; }
+.d-flex { display: flex; }
+.align-center { align-items: center; }

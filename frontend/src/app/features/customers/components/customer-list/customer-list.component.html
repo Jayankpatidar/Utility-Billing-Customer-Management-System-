@@ -1,0 +1,98 @@
+<div class="page-header">
+  <div class="page-header-left">
+    <h1>Customers</h1>
+    <p>{{ isCustomer ? 'View your account profile' : 'Manage customer accounts and profiles' }}</p>
+  </div>
+  <div class="page-header-actions" *ngIf="canManageCustomers">
+    <button class="btn btn-primary" (click)="openAdd()">
+      <i class="fas fa-plus"></i> Add Customer
+    </button>
+  </div>
+</div>
+
+<!-- Filter Bar -->
+<div class="filter-bar">
+  <div class="search-wrap">
+    <i class="fas fa-search"></i>
+    <input class="search-input" type="text" placeholder="Search by name, email, ID..."
+           [(ngModel)]="searchQuery" (ngModelChange)="applyFilters()" />
+  </div>
+  <select class="form-control" style="width:auto" [(ngModel)]="statusFilter" (ngModelChange)="applyFilters()">
+    <option value="">All Status</option>
+    <option value="active">Active</option>
+    <option value="inactive">Inactive</option>
+    <option value="suspended">Suspended</option>
+  </select>
+  <select class="form-control" style="width:auto" [(ngModel)]="typeFilter" (ngModelChange)="applyFilters()">
+    <option value="">All Types</option>
+    <option value="residential">Residential</option>
+    <option value="commercial">Commercial</option>
+  </select>
+</div>
+
+<!-- Table -->
+<app-loading-spinner *ngIf="loading"></app-loading-spinner>
+
+<div class="card" style="padding:0" *ngIf="!loading">
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Customer ID</th>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Status</th>
+          <th>Meter No.</th>
+          <th>Plan</th>
+          <th>Location</th>
+          <th *ngIf="canManageCustomers">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of filtered">
+          <td><span class="mono accent-text">{{ c.customerId || c._id }}</span></td>
+          <td>
+            <strong>{{ c.name }}</strong>
+            <div class="text-sm muted">{{ c.email }}</div>
+          </td>
+          <td><app-badge [value]="c.accountType"></app-badge></td>
+          <td><app-badge [value]="c.status"></app-badge></td>
+          <td><span class="mono text-sm">{{ c.meterNumber || '–' }}</span></td>
+          <td>{{ c.tariffPlan }}</td>
+          <td class="muted text-sm">{{ c.address?.city }}<span *ngIf="c.address?.state">, {{ c.address?.state }}</span></td>
+          <td *ngIf="canManageCustomers">
+            <div class="action-btns">
+              <button class="btn btn-sm btn-blue"   (click)="openEdit(c)" title="Edit"><i class="fas fa-edit"></i></button>
+              <button class="btn btn-sm btn-danger" (click)="confirmDelete(c)" title="Delete"><i class="fas fa-trash"></i></button>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="filtered.length === 0">
+          <td [attr.colspan]="canManageCustomers ? 8 : 7">
+            <app-empty-state icon="fa-users" title="No customers found" [message]="canManageCustomers ? 'Add your first customer or adjust filters.' : 'No customer profile available.'"></app-empty-state>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Add/Edit Form Modal -->
+<app-customer-form
+  *ngIf="canManageCustomers"
+  [isOpen]="showForm"
+  [customer]="editCustomer"
+  (saved)="onSaved()"
+  (cancelled)="showForm = false">
+</app-customer-form>
+
+<!-- Confirm Delete Modal -->
+<app-confirm-modal
+  *ngIf="canManageCustomers"
+  [isOpen]="showConfirm"
+  title="Delete Customer"
+  [message]="'Are you sure you want to delete ' + (deleteTarget?.name || 'this customer') + '?'"
+  confirmLabel="Delete"
+  (confirmed)="onDelete()"
+  (cancelled)="showConfirm = false">
+</app-confirm-modal>
